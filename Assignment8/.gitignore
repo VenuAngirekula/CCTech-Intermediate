@@ -1,0 +1,5 @@
+# Excluding the binary from being tracked
+simpleInterest
+
+# Exclude .vscode files
+.vscode
