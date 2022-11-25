@@ -1,0 +1,5 @@
+# Excluding the binary from being tracked
+Float_CalculatoR
+
+# Exclude .vscode files
+.vscode
