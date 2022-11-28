@@ -1,0 +1,5 @@
+# Excluding the binary from being tracked
+floatToFourBytes
+
+# Exclude .vscode files
+.vscode

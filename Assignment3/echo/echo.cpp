@@ -27,6 +27,7 @@ bool echo_withCommandLine(int count, char const *b[])
     if (count==0)
     {
         cout << "\n";
+        
         return true;
     }
     else
@@ -43,11 +44,11 @@ bool echo_withCommandLine(int count, char const *b[])
 
 int main(int argc, char const *argv[])
 {
-    // string a[] = {};
-    // assert( echo_withStrings(sizeof(a)/sizeof(a[0]), a) );
+    string a[] = {};
+    assert( echo_withStrings(sizeof(a)/sizeof(a[0]), a) );
 
-    string c[] = {"foo", "bar"};
-    assert( echo_withStrings(sizeof(c)/sizeof(c[0]), c) );
+    // string c[] = {"foo", "bar"};
+    // assert( echo_withStrings(sizeof(c)/sizeof(c[0]), c) );
     
     // assert( echo_withCommandLine(argc, argv) );
     

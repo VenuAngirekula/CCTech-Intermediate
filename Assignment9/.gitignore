@@ -1,0 +1,5 @@
+# Excluding the binary from being tracked
+SquareootCalc
+
+# Exclude .vscode files
+.vscode
