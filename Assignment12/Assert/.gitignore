@@ -1,0 +1,5 @@
+# Excluding the binary/object files from being tracked
+foo.o
+
+# Exclude .vscode files
+.vscode
