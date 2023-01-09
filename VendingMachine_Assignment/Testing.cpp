@@ -1,25 +1,7 @@
-
-#include "VendingMachine.H"
-#include <sstream>
-#include <cassert>
-
-using namespace std;
-
-void Testing_Acceptcoins(VendingMachine& VM, 
-                            std::string coins);
-
-void Testing_ItemSelection(VendingMachine& VM, std::string Insertedcoins,\
-                        std::string selecteditem);
-
-float Testing_Dispatch_Reinsert_Makechange(VendingMachine& VM, std::string Insertedcoins,\
-                               std::string selecteditem);
-
-float Testing_Repeat_itemSelection(VendingMachine& VM, std::string Insertedcoins,\
-                               std::string selecteditem);
+#include "Testing.H"
 
 int main(int argc, char const *argv[])
 {
-    #if 1
     /***********Testing Acceting coins*****************/
     {
         cout << "\nTest case 1" << endl;
@@ -63,7 +45,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 5" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "0N0D4Q";
+        std::string coinsinserted = "0N0D4Q\nYes";
         std::string itemTobeSelected = "Cola"; float TestBalance = 0.0;
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);
@@ -73,7 +55,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 6" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "0N5D0Q";
+        std::string coinsinserted = "0N5D0Q\nYes";
         std::string itemTobeSelected = "Chips"; float TestBalance = 0.0;
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);
@@ -83,7 +65,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 7" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "3N5D0Q";
+        std::string coinsinserted = "3N5D0Q\nYes";
         std::string itemTobeSelected = "Candy"; float TestBalance = 0.0;
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);
@@ -93,7 +75,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 7 (ii)" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "3N5D0Q";
+        std::string coinsinserted = "3N5D0Q\nYes";
         std::string itemTobeSelected = "Candy\nN"; float TestBalance = 0.0;
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);
@@ -114,7 +96,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 8" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "0N3D0Q";
+        std::string coinsinserted = "0N3D0Q\nYes";
         std::string itemTobeSelected = "Cola"; 
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);
@@ -124,7 +106,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 9" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "0N0D1Q\n 0N0D1Q\n 0N0D1Q\n 0N0D1Q";
+        std::string coinsinserted = "0N0D1Q\n 0N0D1Q\n 0N0D1Q\n 0N0D1Q\nYes";
         std::string itemTobeSelected = "Cola";
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);
@@ -135,7 +117,7 @@ int main(int argc, char const *argv[])
     {
         cout << "\nTest case 10" << endl;
         VendingMachine VM(5,5,5);
-        std::string coinsinserted = "1N0D0Q\n 2N0D0Q\n 0N0D1Q\n 0N2D0Q\n 1N0D0Q";
+        std::string coinsinserted = "1N0D0Q\n 2N0D0Q\n 0N0D1Q\n 0N2D0Q\n 1N0D0Q\nYes";
         std::string itemTobeSelected = "Candy";
         float balanceAmount =  Testing_Dispatch_Reinsert_Makechange(VM,coinsinserted,\
                                     itemTobeSelected);        
@@ -228,7 +210,6 @@ int main(int argc, char const *argv[])
 
         assert( VM._selectedItem == "CANDY");
     }
-    #endif
     // Case: EXACT CHANGE needed - Before inserting
     {
         cout << "\nTest case 18" << endl;
@@ -283,10 +264,10 @@ float Testing_Dispatch_Reinsert_Makechange(VendingMachine& VM, std::string Inser
     VM.InsertCoins();
     //Select item
     std::cin.rdbuf(itemstream.rdbuf());
-    string itemSelected = VM.SelectItem();
+    VM.SelectItem();
     //Reinsert coin
     std::cin.rdbuf(coinstream.rdbuf());
-    VM.Dispatch_Reinsert_Makechange(itemSelected);
+    VM.Dispatch_Reinsert_Makechange();
     
     std::cin.rdbuf(cin_backup);    
     return VM._balanceAmount;
@@ -305,10 +286,10 @@ float Testing_Repeat_itemSelection(VendingMachine& VM, std::string Insertedcoins
     VM.InsertCoins();
     //Select item
     std::cin.rdbuf(itemstream.rdbuf());
-    string itemSelected = VM.SelectItem();
+    VM.SelectItem();
     //Reinsert coin
     std::cin.rdbuf(coinstream.rdbuf());
-    VM.Dispatch_Reinsert_Makechange(itemSelected);
+    VM.Dispatch_Reinsert_Makechange();
     
     std::cin.rdbuf(cin_backup);    
     return VM._balanceAmount;

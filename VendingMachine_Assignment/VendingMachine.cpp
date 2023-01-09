@@ -4,21 +4,25 @@ using namespace std;
 
 
 /********************        Constructor      ***********************************/
+VendingMachine::VendingMachine()
+{
+    SetInventory(std::array<int,3> {5, 5, 5});
+    std::array<int,3> Default_Treasury = {5,5,5};
+    SetTreasurycoins(Default_Treasury);
+}
+
 VendingMachine::VendingMachine(int colaCount, int chipscount,int candycount)
 {
     SetInventory(std::array<int,3> {colaCount, chipscount, candycount});
     std::array<int,3> Default_Treasury = {5,5,5};
     SetTreasurycoins(Default_Treasury);
-   // PrintHeader();
 }
 
-
 VendingMachine::VendingMachine(std::array<int,3> Initial_Inventory)
-{
+{    
     SetInventory(Initial_Inventory);
     std::array<int,3> Default_Treasury = {5,5,5};
     SetTreasurycoins(Default_Treasury);
-   // PrintHeader();
 }
 
 VendingMachine::VendingMachine(std::array<int,3> Initial_Inventory,
@@ -26,8 +30,6 @@ VendingMachine::VendingMachine(std::array<int,3> Initial_Inventory,
 {
     SetInventory(Initial_Inventory);
     SetTreasurycoins(Initial_Treasury);
-
-   // PrintHeader();
 }
 
 void VendingMachine::SetInventory(std::array<int,3> Initial_Inventory)
@@ -44,7 +46,13 @@ void VendingMachine::SetTreasurycoins(std::array<int,3> Initial_Treasury)
     _Treasury_Quaters = Initial_Treasury[2];
     _Treasury_Coins = Initial_Treasury;
 }
-
+void VendingMachine::Execute()
+{
+    PrintHeader();
+    InsertCoins();
+    SelectItem();
+    Dispatch_Reinsert_Makechange();
+}
 bool VendingMachine::check_Treasury()
 {
     if (_Treasury_Nickels == 0 || _Treasury_Dimes == 0){
@@ -71,7 +79,7 @@ bool VendingMachine::InsertCoins()
     bool exactneeded = check_Treasury();
     string coinInput;
     cout << "INSERT COINS : ";
-    cin >> coinInput;
+    getline(std::cin, coinInput);
 
     if(coinInput.empty())
     {
@@ -88,6 +96,9 @@ bool VendingMachine::InsertCoins()
 void VendingMachine::ProcessCoins(string coinInput)
 {
     int ind = 0;
+    coinInput.erase(std::remove_if(coinInput.begin(),
+                            coinInput.end(), ::isspace), coinInput.end());
+    cout << coinInput << endl;                            
     regex pat("\\d+");
 	smatch result;
     while (std::regex_search(coinInput, result, pat)) {
@@ -116,9 +127,6 @@ std::string VendingMachine::SelectItem()
     {
         _selectedItem = item;
         CheckInventory(item);
-        #if PROD
-            Dispatch_Reinsert_Makechange(item);
-        #endif
     }
     else
     {
@@ -138,13 +146,14 @@ void VendingMachine::CheckInventory(std::string item)
     }
 }
 
-void VendingMachine::Dispatch_Reinsert_Makechange(std::string item)
+void VendingMachine::Dispatch_Reinsert_Makechange()
 {
+    string item = _selectedItem;
     _balanceAmount =  _currentAmount - _Rates[item];
     
     if(_Rates[item] > _currentAmount)  // Re-insert
     {
-        ReInsertCoins(item); 
+        ReInsertCoins(); 
     }
     else if (std::fabs(_balanceAmount) < 1e-06)  //Dispatch
     {  
@@ -181,22 +190,27 @@ bool VendingMachine::ReturnCoins()
     return false;
 }
 
-void VendingMachine::ReInsertCoins(std::string item)
+void VendingMachine::ReInsertCoins()
 {
     if (InsertCoins())
     {
-        Dispatch_Reinsert_Makechange(item);
+        Dispatch_Reinsert_Makechange();
         return;
     }
 }
 
 bool VendingMachine::checkReturnCoins()
 {
-    cout << "Select Proceed (YES) or Return coins(N0)" << endl;
+    cout << "Select Proceed (YES) or Return coins(NO)" << endl;
     string RetcoinUserInput;
     cin >> RetcoinUserInput;
     std::transform(RetcoinUserInput.begin(), RetcoinUserInput.end(),
             RetcoinUserInput.begin(), ::toupper);
+    std::regex yesnopattern("^YES|NO$");
+    if(!std::regex_match(RetcoinUserInput, yesnopattern))
+    {
+        checkReturnCoins();
+    }
     if(RetcoinUserInput=="YES")
         return true;
 

@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cmath>
 #include <unordered_map>
+#include <algorithm>
 
 class VendingMachine
 {
@@ -39,6 +40,8 @@ class VendingMachine
         std::array<int,3> _Return_coins;
         std::string _selectedItem;
         float _balanceAmount;
+
+        VendingMachine();
 
         VendingMachine(int colaCount, int chipscount, int candycount);
 
@@ -73,9 +76,9 @@ class VendingMachine
 
         std::string SelectItem();
 
-        void Dispatch_Reinsert_Makechange(std::string item);
+        void Dispatch_Reinsert_Makechange();
 
-        void ReInsertCoins(std::string item);
+        void ReInsertCoins();
 
         bool ReturnCoins();
 
@@ -85,6 +88,7 @@ class VendingMachine
         
         void CheckInventory(std::string item);
 
+        void Execute();
         std::array<int,3> Add_Arrays(std::array<int,3> A, std::array<int,3> B);
 
 };
